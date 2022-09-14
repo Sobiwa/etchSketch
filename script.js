@@ -4,7 +4,7 @@ const removableContainer = document.createElement('div');
 removableContainer.classList.add('remove');
 container.appendChild(removableContainer);
 
-alert('Hello hello hello! Double-click for a whole new show!')
+alert('Hello hello hello! Double-click for a whole new show!\nPress any key to enter grey mode!')
 
 for (i = 0; i < 16; i++) {
     let row = document.createElement('div');
@@ -19,11 +19,16 @@ for (i = 0; i < 16; i++) {
 };
 
 addColor();
+addEventMagicOther();
 
 addEventListener('keydown', () => {
-    
-    addBlack();
+    let blocks = document.querySelectorAll('.block');
+    blocks.forEach((block) => {
+        block.removeEventListener('mouseover', randomBackgroundColor)
+        });
+   addBlack();
 });
+
 
 function generateRandomRGB() {
     return Math.floor(Math.random() * 256);
@@ -46,6 +51,7 @@ function adjustGrid(num) {
         }
     }
     addColor();
+    addEventMagicOther();
 }
 
 function promptOutcomes(input) {
@@ -63,53 +69,52 @@ function promptOutcomes(input) {
     }
 }
 
-function addEventMagic(block) {
-    block.addEventListener('mouseover', () => {
-        let r = generateRandomRGB();
-        let g = generateRandomRGB();
-        let b = generateRandomRGB();
-        block.style.backgroundColor = `rgb(${r},${g},${b})`;
-    });
-    block.addEventListener('click', () => {
-        let r = generateRandomRGB();
-        let g = generateRandomRGB();
-        let b = generateRandomRGB();
-        block.style.backgroundColor = `rgb(${r},${g},${b})`;
-    });
-    block.addEventListener('dblclick', () => {
-        const gridChangeValue = prompt('A number of blocks per row\nthat will double as the number of rows\nis what I request to know\nand we shall see how that goes', '');
-        promptOutcomes(gridChangeValue);
-        if (gridChangeValue > 100) {
-            let newValue = 101;
-            while (newValue > 100) {
-                newValue = prompt('Unfortunately so,\nthere is a limit to how much I can grow.', '')
-                promptOutcomes(newValue);
-            }
-        }
-    })
-}
-
-function addEventMagicBlack(block) {
-    let blackness = 1;
-    block.addEventListener('mouseover', () => {
-        if (blackness >= 0) {
-            blackness = blackness - 0.1;
-            rgbValue = (255 * blackness)
-            block.style.backgroundColor = `rgb(${rgbValue},${rgbValue},${rgbValue})`;
-        }
-    });
-};
-
 function addColor() {
     let blocks = document.querySelectorAll('.block');
     blocks.forEach((block) => {
-        addEventMagic(block)
+        block.addEventListener('mouseover', randomBackgroundColor)
+        });
+    }
+
+
+function randomBackgroundColor(e) {
+    let r = generateRandomRGB();
+    let g = generateRandomRGB();
+    let b = generateRandomRGB();
+    e.target.style.backgroundColor = `rgb(${r},${g},${b})`;
+}
+
+function addBlack() {  
+    let blocks = document.querySelectorAll('.block');
+    blocks.forEach((block) => {
+        let blackness = 1;    
+        block.addEventListener('mouseover', () => {
+            if (blackness >= 0) {
+                blackness = blackness - 0.1;
+                rgbValue = (255 * blackness)
+                block.style.backgroundColor = `rgb(${rgbValue},${rgbValue},${rgbValue})`;
+            };
+        });;
+        });
+    }
+
+function addEventMagicOther() {
+    let blocks = document.querySelectorAll('.block');
+    blocks.forEach((block) => {
+        block.addEventListener('click', () => {
+            randomBackgroundColor(block);
+        });
+        block.addEventListener('dblclick', () => {
+            const gridChangeValue = prompt('A number of blocks per row\nthat will double as the number of rows\nis what I request to know\nand we shall see how that goes', '');
+            promptOutcomes(gridChangeValue);
+            if (gridChangeValue > 100) {
+                let newValue = 101;
+                while (newValue > 100) {
+                    newValue = prompt('Unfortunately so,\nthere is a limit to how much I can grow.', '')
+                    promptOutcomes(newValue);
+                }
+            }
+        })
     });
 }
 
-function addBlack() {
-    let blocks = document.querySelectorAll('.block');
-    blocks.forEach((block) => {
-        addEventMagicBlack(block)
-    })
-}

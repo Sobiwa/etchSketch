@@ -21,14 +21,42 @@ for (i = 0; i < 16; i++) {
 addColor();
 addEventMagicOther();
 
-addEventListener('keydown', () => {
+let roundToggleTracking = 0;
+
+addEventListener('keydown', (e) => {
+    if (e.keyCode === 32) {
     let blocks = document.querySelectorAll('.block');
     blocks.forEach((block) => {
         block.removeEventListener('mouseover', randomBackgroundColor)
         });
    addBlack();
-});
+    }
+    else if (e.keyCode === 13) {
+        roundToggleTracking += 1;
+        if (roundToggleTracking % 2 === 0) {
+            let rounds = document.querySelectorAll('.round');
+            rounds.forEach((round) => {
+                round.classList.remove('round');
+            })
+            let blocks = document.querySelectorAll('.block');
+            blocks.forEach((block) => {
+                block.removeEventListener('mouseover', toggleRound);
+            })
+        } else {
+            let blocks = document.querySelectorAll('.block');
+            blocks.forEach((block) => {
+                block.addEventListener('mouseover', toggleRound);
+            })
+        }
+    }
+    else {
+        return
+    }
+})
 
+function toggleRound (e) {
+    e.target.classList.toggle('round');
+}
 
 function generateRandomRGB() {
     return Math.floor(Math.random() * 256);

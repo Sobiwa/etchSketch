@@ -4,7 +4,7 @@ const removableContainer = document.createElement('div');
 removableContainer.classList.add('remove');
 container.appendChild(removableContainer);
 
-alert('Hello hello hello! Double-click for a whole new show!\nPress any key to enter grey mode!')
+alert('Hello hello hello!\nDouble-click for a whole new show!\nPress space key to enter grey mode!\nClick on Shift to shift what you see!\nOr to mix it all up, Enter is your key!')
 
 for (i = 0; i < 16; i++) {
     let row = document.createElement('div');
@@ -22,6 +22,7 @@ addColor();
 addEventMagicOther();
 
 let roundToggleTracking = 0;
+let roundTracking = 0;
 
 addEventListener('keydown', (e) => {
     if (e.keyCode === 32) {
@@ -30,14 +31,10 @@ addEventListener('keydown', (e) => {
         block.removeEventListener('mouseover', randomBackgroundColor)
         });
    addBlack();
-    }
-    else if (e.keyCode === 13) {
+    } else if (e.keyCode === 13) {
         roundToggleTracking += 1;
         if (roundToggleTracking % 2 === 0) {
-            let rounds = document.querySelectorAll('.round');
-            rounds.forEach((round) => {
-                round.classList.remove('round');
-            })
+            removeRound();
             let blocks = document.querySelectorAll('.block');
             blocks.forEach((block) => {
                 block.removeEventListener('mouseover', toggleRound);
@@ -47,12 +44,30 @@ addEventListener('keydown', (e) => {
             blocks.forEach((block) => {
                 block.addEventListener('mouseover', toggleRound);
             })
+        } 
+    } else if (e.keyCode === 16) {
+        roundTracking += 1;
+        if (roundTracking % 2 === 0) {
+            removeRound();
+        } else {
+            removeRound();
+            let blocks = document.querySelectorAll('.block');
+            blocks.forEach((block) => {
+                block.classList.add('round');
+            })
         }
-    }
-    else {
+    } else {
         return
     }
 })
+
+
+function removeRound() {
+    let rounds = document.querySelectorAll('.round');
+    rounds.forEach((round) => {
+        round.classList.remove('round');
+    })
+}
 
 function toggleRound (e) {
     e.target.classList.toggle('round');
@@ -63,6 +78,8 @@ function generateRandomRGB() {
 };
 
 function adjustGrid(num) {
+    roundToggleTracking = 0;
+    roundTracking = 0;
     let blockSize = (100/num);
     let newRemovableContainer = document.createElement('div');
     newRemovableContainer.classList.add('remove');

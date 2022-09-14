@@ -101,9 +101,7 @@ function addBlack() {
 function addEventMagicOther() {
     let blocks = document.querySelectorAll('.block');
     blocks.forEach((block) => {
-        block.addEventListener('click', () => {
-            randomBackgroundColor(block);
-        });
+        block.addEventListener('click', randomBackgroundColor);
         block.addEventListener('dblclick', () => {
             const gridChangeValue = prompt('A number of blocks per row\nthat will double as the number of rows\nis what I request to know\nand we shall see how that goes', '');
             promptOutcomes(gridChangeValue);

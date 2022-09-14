@@ -15,16 +15,8 @@ body {
 .row {
     display: flex;
 }
-.block {
-    flex: 1 1 auto;
-    margin:0;
-    width: 6.25vh;
-    height: 6.25vh;
-}
 
 .hover {
     background-color:aqua;
 }
-/* .block:hover {
-    background-color:aqua;
-} */
+

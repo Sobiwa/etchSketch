@@ -4,7 +4,7 @@ const removableContainer = document.createElement('div');
 removableContainer.classList.add('remove');
 container.appendChild(removableContainer);
 
-alert('Hello hello hello!\nDouble-click for a whole new show!\nPress space key to enter grey mode!\nClick on Shift to shift what you see!\nOr to mix it all up, Enter is your key!')
+alert('Hello hello hello!\nDouble-click for a whole new show!\nPress space key to enter color mode!\nClick on Shift to shift what you see!\nOr to mix it all up, Enter is your key!')
 
 for (i = 0; i < 16; i++) {
     let row = document.createElement('div');
@@ -34,18 +34,9 @@ addEventListener('keydown', (e) => {
         } else {
             addColor();
         }
-
-        
-//     let blocks = document.querySelectorAll('.block');
-//     blocks.forEach((block) => {
-//         block.removeEventListener('mouseover', randomBackgroundColor)
-//         });
-//    addBlack();
-
     } else if (e.keyCode === 13) {
         roundToggleTracking += 1;
         if (roundToggleTracking % 2 === 0) {
-            removeRound();
             let blocks = document.querySelectorAll('.block');
             blocks.forEach((block) => {
                 block.removeEventListener('mouseover', toggleRound);
@@ -89,6 +80,7 @@ function generateRandomRGB() {
 };
 
 function adjustGrid(num) {
+    blackColorToggleTracking = 0;
     roundToggleTracking = 0;
     roundTracking = 0;
     let blockSize = (100/num);
@@ -106,7 +98,6 @@ function adjustGrid(num) {
             row.appendChild(block);
         }
     }
-    // addColor();
     addBlack();
     addEventMagicOther();
 }

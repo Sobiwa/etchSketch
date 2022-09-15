@@ -6,6 +6,7 @@ container.appendChild(removableContainer);
 
 alert('Hello hello hello!\nDouble-click for a whole new show!\nPress space key to enter color mode!\nClick on Shift to shift what you see!\nOr to mix it all up, Enter is your key!')
 
+// Initial startup grid settings
 for (i = 0; i < 16; i++) {
     let row = document.createElement('div');
     row.classList.add('row');
@@ -18,7 +19,6 @@ for (i = 0; i < 16; i++) {
     };
 };
 
-// addColor();
 addBlack();
 addEventMagicOther();
 
@@ -26,7 +26,9 @@ let roundToggleTracking = 0;
 let roundTracking = 0;
 let blackColorToggleTracking = 0;
 
+
 addEventListener('keydown', (e) => {
+//space key toggles colors
     if (e.keyCode === 32) {
         blackColorToggleTracking += 1;
         if (blackColorToggleTracking % 2 === 0) {
@@ -34,6 +36,7 @@ addEventListener('keydown', (e) => {
         } else {
             addColor();
         }
+//enter key turns on shape toggle
     } else if (e.keyCode === 13) {
         roundToggleTracking += 1;
         if (roundToggleTracking % 2 === 0) {
@@ -47,6 +50,7 @@ addEventListener('keydown', (e) => {
                 block.addEventListener('mouseover', toggleRound);
             })
         } 
+//shift key makes everything on screen one uniform shape
     } else if (e.keyCode === 16) {
         roundTracking += 1;
         if (roundTracking % 2 === 0) {
@@ -74,10 +78,6 @@ function removeRound() {
 function toggleRound (e) {
     e.target.classList.toggle('round');
 }
-
-function generateRandomRGB() {
-    return Math.floor(Math.random() * 256);
-};
 
 function adjustGrid(num) {
     blackColorToggleTracking = 0;
@@ -117,6 +117,18 @@ function promptOutcomes(input) {
     }
 }
 
+function generateRandomRGB() {
+    return Math.floor(Math.random() * 256);
+};
+
+function randomBackgroundColor(e) {
+    let r = generateRandomRGB();
+    let g = generateRandomRGB();
+    let b = generateRandomRGB();
+    e.target.classList.add('colored');
+    e.target.style.backgroundColor = `rgb(${r},${g},${b})`;
+}
+
 function addColor() {
     let blocks = document.querySelectorAll('.block');
     blocks.forEach((block) => {
@@ -129,14 +141,6 @@ function removeColor() {
     blocks.forEach((block) => {
         block.removeEventListener('mouseover', randomBackgroundColor)
     })
-}
-
-function randomBackgroundColor(e) {
-    let r = generateRandomRGB();
-    let g = generateRandomRGB();
-    let b = generateRandomRGB();
-    e.target.classList.add('colored');
-    e.target.style.backgroundColor = `rgb(${r},${g},${b})`;
 }
 
 function addBlack() {  

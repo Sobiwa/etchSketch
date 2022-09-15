@@ -18,19 +18,30 @@ for (i = 0; i < 16; i++) {
     };
 };
 
-addColor();
+// addColor();
+addBlack();
 addEventMagicOther();
 
 let roundToggleTracking = 0;
 let roundTracking = 0;
+let blackColorToggleTracking = 0;
 
 addEventListener('keydown', (e) => {
     if (e.keyCode === 32) {
-    let blocks = document.querySelectorAll('.block');
-    blocks.forEach((block) => {
-        block.removeEventListener('mouseover', randomBackgroundColor)
-        });
-   addBlack();
+        blackColorToggleTracking += 1;
+        if (blackColorToggleTracking % 2 === 0) {
+        removeColor();
+        } else {
+            addColor();
+        }
+
+        
+//     let blocks = document.querySelectorAll('.block');
+//     blocks.forEach((block) => {
+//         block.removeEventListener('mouseover', randomBackgroundColor)
+//         });
+//    addBlack();
+
     } else if (e.keyCode === 13) {
         roundToggleTracking += 1;
         if (roundToggleTracking % 2 === 0) {
@@ -95,7 +106,8 @@ function adjustGrid(num) {
             row.appendChild(block);
         }
     }
-    addColor();
+    // addColor();
+    addBlack();
     addEventMagicOther();
 }
 
@@ -121,11 +133,18 @@ function addColor() {
         });
     }
 
+function removeColor() {
+    let blocks = document.querySelectorAll('.block');
+    blocks.forEach((block) => {
+        block.removeEventListener('mouseover', randomBackgroundColor)
+    })
+}
 
 function randomBackgroundColor(e) {
     let r = generateRandomRGB();
     let g = generateRandomRGB();
     let b = generateRandomRGB();
+    e.target.classList.add('colored');
     e.target.style.backgroundColor = `rgb(${r},${g},${b})`;
 }
 
@@ -133,11 +152,15 @@ function addBlack() {
     let blocks = document.querySelectorAll('.block');
     blocks.forEach((block) => {
         let blackness = 1;    
-        block.addEventListener('mouseover', () => {
-            if (blackness >= 0) {
+        block.addEventListener('mouseover', (e) => {
+            if (e.target.classList.contains('colored')) {
+                blackness = 1;
+                e.target.classList.remove('colored');
+                e.target.style.backgroundColor = 'rgb(255,255,255)';
+            } else if (blackness >= 0) {
                 blackness = blackness - 0.1;
                 rgbValue = (255 * blackness)
-                block.style.backgroundColor = `rgb(${rgbValue},${rgbValue},${rgbValue})`;
+                e.target.style.backgroundColor = `rgb(${rgbValue},${rgbValue},${rgbValue})`;
             };
         });;
         });
